@@ -119,7 +119,7 @@ def time_stats(df):
 
         #display most common start hour
         print("The most common start hour is: {}".format(df['hour'].mode()[0]))
-        
+
     except Exception as e:
         print("Exception occurred: {}".format(e))
 
@@ -186,8 +186,7 @@ def user_stats(df, city):
         gender_types = df['Gender'].value_counts()
         print("\nCounts of gender:\n{}".format(gender_types))
 
-    # TO DO: Display earliest, most recent, and most common year of birth
-    if city != 'washington':
+        # TO DO: Display earliest, most recent, and most common year of birth
         earliest_birth = df['Birth Year'].min()
         recent_birth = df['Birth Year'].max()
         common_birth = df['Birth Year'].mode()[0]
