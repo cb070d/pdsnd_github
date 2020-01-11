@@ -34,9 +34,9 @@ def get_filters():
         month = input("Select the month. Type the name a month, January - June, and press Enter. \nIf you want to view data for all months, type All and press Enter. \n").lower()
 
     # TO DO: get user input for day of week (all, monday, tuesday, ... sunday)
-    while (day not in listOfDays and day != 'all'): 
+    while (day not in listOfDays and day != 'all'):
         day = input("Select the day of the week. Type the name of the day, Monday - Sunday, and press Enter. \nIf you want to view data for all days of the week, type All and press Enter. \n").lower()
-    
+
 
     print('-'*40)
     return city, month, day
@@ -53,37 +53,37 @@ def load_data(city, month, day):
     Returns:
         df - pandas DataFrame containing city data filtered by month and day
     """
-    
+
     # load data file into a dataframe
     df = pd.read_csv('{}.csv'.format(city))
 
 
     # convert the Start Time column to datetime
     df['Start Time'] = pd.to_datetime(df['Start Time'])
-    
+
 
     # extract month and day of week from Start Time to create new columns
     df['month'] = df['Start Time'].dt.month
     df['day_of_week'] = df['Start Time'].dt.weekday_name
-    
+
 
 
     # filter by month if applicable
     if month != 'all':
         # use the index of the months list to get the corresponding int
         month = listOfMonths.index(month)
-        
-    
+
+
         # filter by month to create the new dataframe
         df = df.loc[df['month'] == month]
-        
+
 
     # filter by day of week if applicable
     if day != 'all':
         # filter by day of week to create the new dataframe
         df = df[df['day_of_week'] == day.title()]
         print(df)
-    
+
     return df
 
 
@@ -94,41 +94,35 @@ def time_stats(df):
     start_time = time.time()
 
     # TO DO: display the most common month
-    try: 
-        # find the most common month
-        popular_month = df['month'].mode()[0]
-        
+    try:
         #display most common month
-        print("The most common month is: {}".format(popular_month))
-    except Exception as e: 
-        print("Exception occurred: {}".format(e)) 
-        
+        print("The most common month is: {}".format(df['month'].mode()[0]))
+
+    except Exception as e:
+        print("Exception occurred: {}".format(e))
+
     # TO DO: display the most common day of week
-    try: 
-        # find the most common day
-        popular_day = df['day_of_week'].mode()[0]
-        
+    try:
         #display most common day of week
-        print("The most common day of the week is: {}".format(popular_day))
-    except Exception as e: 
-        print("Exception occurred: {}".format(e)) 
+        print("The most common day of the week is: {}".format(df['day_of_week'].mode()[0]))
+
+    except Exception as e:
+        print("Exception occurred: {}".format(e))
 
     # TO DO: display the most common start hour
-    try: 
+    try:
         # convert the Start Time column to datetime
         df['Start Time'] = pd.to_datetime(df['Start Time'])
 
         # extract hour from the Start Time column to create an hour column
         df['hour'] = df['Start Time'].dt.hour
 
-        # find the most common hour (from 0 to 23)
-        popular_hour = df['hour'].mode()[0]
-        
         #display most common start hour
-        print("The most common start hour is: {}".format(popular_hour))
-    except Exception as e: 
-        print("Exception occurred: {}".format(e)) 
-    
+        print("The most common start hour is: {}".format(df['hour'].mode()[0]))
+        
+    except Exception as e:
+        print("Exception occurred: {}".format(e))
+
 
 
     print("\nThis took %s seconds." % (time.time() - start_time))
@@ -188,7 +182,7 @@ def user_stats(df, city):
     print("Counts of user types:\n{}".format(user_types))
 
     # TO DO: Display counts of gender
-    if city != 'washington': 
+    if city != 'washington':
         gender_types = df['Gender'].value_counts()
         print("\nCounts of gender:\n{}".format(gender_types))
 
@@ -197,7 +191,7 @@ def user_stats(df, city):
         earliest_birth = df['Birth Year'].min()
         recent_birth = df['Birth Year'].max()
         common_birth = df['Birth Year'].mode()[0]
-    
+
         print('\nThe earliest year of birth is: {}'.format(earliest_birth))
         print('The most recent year of birth is: {}'.format(recent_birth))
         print('The most common year of birth is: {}'.format(common_birth))
@@ -211,27 +205,27 @@ def main():
     while True:
         city, month, day = get_filters()
         df = load_data(city, month, day)
-        if df.empty: 
+        if df.empty:
             print('There are no search results for the filters you applied! Restart and try a different search selection.')
-        else: 
+        else:
             time_stats(df)
             station_stats(df)
             trip_duration_stats(df)
             user_stats(df, city)
-        
+
             counter = 0
             view_data = input('\nWould you like to view the data? Enter yes or no. \n')
             while view_data.lower() == 'yes':
                 print(df.iloc[counter:counter + 5])
                 counter += 5
                 view_data = input('\nWould you like to view more data? Enter yes or no. \n')
-            
-            
+
+
 
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes':
             break
-            
+
 
 
 if __name__ == "__main__":
