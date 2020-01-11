@@ -93,23 +93,19 @@ def time_stats(df):
     print('\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
 
-    # display the most common month
     try:
-        # find the most common month
-        popular_month = df['month'].mode()[0]
 
         #display most common month
-        print("The most common month is: {}".format(popular_month))
+        print("The most common month is: {}".format(df['month'].mode()[0]))
+
     except Exception as e:
         print("Exception occurred: {}".format(e))
 
-    # display the most common day of week
+    #  display the most common day of week
     try:
-        # find the most common day
-        popular_day = df['day_of_week'].mode()[0]
-
         #display most common day of week
-        print("The most common day of the week is: {}".format(popular_day))
+        print("The most common day of the week is: {}".format(df['day_of_week'].mode()[0]))
+
     except Exception as e:
         print("Exception occurred: {}".format(e))
 
@@ -121,11 +117,9 @@ def time_stats(df):
         # extract hour from the Start Time column to create an hour column
         df['hour'] = df['Start Time'].dt.hour
 
-        # find the most common hour (from 0 to 23)
-        popular_hour = df['hour'].mode()[0]
-
         #display most common start hour
-        print("The most common start hour is: {}".format(popular_hour))
+        print("The most common start hour is: {}".format(df['hour'].mode()[0]))
+
     except Exception as e:
         print("Exception occurred: {}".format(e))
 
@@ -187,13 +181,12 @@ def user_stats(df, city):
     user_types = df['User Type'].value_counts()
     print("Counts of user types:\n{}".format(user_types))
 
-    # Display counts of gender
+    #Display counts of gender
     if city != 'washington':
         gender_types = df['Gender'].value_counts()
         print("\nCounts of gender:\n{}".format(gender_types))
 
-    # Display earliest, most recent, and most common year of birth
-    if city != 'washington':
+        # Display earliest, most recent, and most common year of birth
         earliest_birth = df['Birth Year'].min()
         recent_birth = df['Birth Year'].max()
         common_birth = df['Birth Year'].mode()[0]
